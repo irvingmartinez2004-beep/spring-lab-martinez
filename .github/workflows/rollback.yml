@@ -1,11 +1,16 @@
-name: Rollback
+name: Rollback Automatico
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
 
 jobs:
   rollback:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     runs-on: ubuntu-latest
+
     steps:
-      - name: Mostrar mensaje
-        run: echo "Rollback ejecutado manualmente"
+      - name: Mostrar mensaje de rollback
+        run: echo "Rollback ejecutado porque el workflow CI falló"
