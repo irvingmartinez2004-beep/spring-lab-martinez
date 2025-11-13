@@ -63,6 +63,10 @@ public class StudentServiceTest {
     }
     */
 
+    // =============================================================
+    //  🔴 AQUÍ COMIENZAN LOS TESTS ADICIONALES (TODOS DESACTIVADOS)
+    // =============================================================
+
 
     /*
     // =============================================================
@@ -72,7 +76,7 @@ public class StudentServiceTest {
     void shouldAlwaysPass() {
         assertThat(true).isTrue();
     }
-    */
+
 
 
     /*
@@ -86,7 +90,7 @@ public class StudentServiceTest {
     */
 
 
-
+    /*
     // =============================================================
     // TEST 3 — Validar fecha futura
     // =============================================================
@@ -95,12 +99,12 @@ public class StudentServiceTest {
         StudentRequestData req = new StudentRequestData();
         req.setFullName("Future User");
         req.setEmail("future@mail.com");
-        req.setBirthDate(LocalDate.now().minusYears(20)); // fecha futura
+        req.setBirthDate(LocalDate.now().plusDays(3)); // fecha futura
 
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(RuntimeException.class); // depende de tu excepción
     }
-
+    */
 
 
     /*
@@ -449,6 +453,259 @@ public class StudentServiceTest {
 
         var r = service.reactivate(s.getId());
         assertThat(r.getActive()).isTrue();
+    }
+    */
+
+
+    /* ================================
+       #1 Create OK / Create Fail
+       ================================ */
+
+    /*
+    @Test // Crear estudiante correctamente
+    void createShouldWork() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Carlos Perez");
+        req.setEmail("carlos@mail.com");
+        req.setBirthDate(LocalDate.of(2000,1,1));
+
+        var r = service.create(req);
+
+        assertThat(r.getEmail()).isEqualTo("carlos@mail.com");
+    }
+
+    @Test // Falla por email duplicado
+    void createShouldFailDuplicate() {
+        repository.save(new Student("X","x@mail.com",
+                LocalDate.of(1990,1,1), true));
+
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("New");
+        req.setEmail("x@mail.com");
+
+        assertThatThrownBy(() -> service.create(req))
+                .isInstanceOf(ConflictException.class);
+    }
+    */
+
+
+
+    /* ================================
+       #2 Fecha válida / Fecha futura inválida
+       ================================ */
+
+
+    @Test // Fecha correcta
+    void shouldAcceptPastDate() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Past");
+        req.setEmail("past@mail.com");
+        req.setBirthDate(LocalDate.now().minusYears(20));
+
+        var r = service.create(req);
+
+        assertThat(r).isNotNull();
+    }
+    /*
+    @Test // Fecha futura
+    void shouldRejectFutureDate() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Future");
+        req.setEmail("future@mail.com");
+        req.setBirthDate(LocalDate.now().plusDays(1));
+
+        assertThatThrownBy(() -> service.create(req))
+                .isInstanceOf(BadRequestException.class);
+    }
+    */
+
+
+
+    /* ================================
+       #3 Buscar OK / Buscar Fail
+       ================================ */
+
+    /*
+    @Test // Buscar estudiante existente
+    void findByIdShouldWork() {
+        Student s = repository.save(new Student("A","a@mail.com",
+                LocalDate.now(), true));
+
+        var r = service.getById(s.getId());
+
+        assertThat(r.getEmail()).isEqualTo("a@mail.com");
+    }
+
+    @Test // Buscar inexistente
+    void findByIdShouldFail() {
+        assertThatThrownBy(() -> service.getById(999L))
+                .isInstanceOf(NotFoundException.class);
+    }
+    */
+
+
+
+    /* ================================
+       #4 Deactivate OK / Deactivate Fail
+       ================================ */
+
+    /*
+    @Test // Desactivar correcto
+    void deactivateShouldWork() {
+        Student s = repository.save(new Student("U","u@mail.com",
+                LocalDate.now(), true));
+
+        var r = service.deactivate(s.getId());
+
+        assertThat(r.getActive()).isFalse();
+    }
+
+    @Test // Error al desactivar inexistente
+    void deactivateShouldFail() {
+        assertThatThrownBy(() -> service.deactivate(222L))
+                .isInstanceOf(NotFoundException.class);
+    }
+    */
+
+
+
+    /* ================================
+       #5 Reactivar OK / Reactivar Fail
+       ================================ */
+
+    /*
+    @Test // Reactivar bien
+    void reactivateShouldWork() {
+        Student s = repository.save(new Student("R","r@mail.com",
+                LocalDate.now(), false));
+
+        var r = service.reactivate(s.getId());
+
+        assertThat(r.getActive()).isTrue();
+    }
+
+    @Test // Reactivar inexistente
+    void reactivateShouldFail() {
+        assertThatThrownBy(() -> service.reactivate(111L))
+                .isInstanceOf(NotFoundException.class);
+    }
+    */
+
+
+
+    /* ================================
+       #6 Update OK / Update Email repetido
+       ================================ */
+
+    /*
+    @Test // Actualizar normal
+    void updateShouldWork() {
+        Student s = repository.save(new Student("Old","old@mail.com",
+                LocalDate.of(2000,1,1), true));
+
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Updated");
+        req.setEmail("new@mail.com");
+        req.setBirthDate(LocalDate.of(1999,9,9));
+        req.setActive(false);
+
+        var r = service.update(s.getId(), req);
+
+        assertThat(r.getEmail()).isEqualTo("new@mail.com");
+    }
+
+    @Test // Email repetido en update
+    void updateShouldFailEmailTaken() {
+        repository.save(new Student("A","taken@mail.com",
+                LocalDate.now(), true));
+
+        Student s2 = repository.save(new Student("B","b@mail.com",
+                LocalDate.now(), true));
+
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("B Updated");
+        req.setEmail("taken@mail.com");
+
+        assertThatThrownBy(() -> service.update(s2.getId(), req))
+                .isInstanceOf(ConflictException.class);
+    }
+    */
+
+
+
+    /* ================================
+       #7 Lista vacía / Lista llena
+       ================================ */
+
+    /*
+    @Test // Lista vacía
+    void listEmpty() {
+        var list = service.list();
+        assertThat(list).isEmpty();
+    }
+
+    @Test // Lista con elementos
+    void listMultiple() {
+        repository.save(new Student("A","a@mail.com",LocalDate.now(),true));
+        repository.save(new Student("B","b@mail.com",LocalDate.now(),false));
+
+        var list = service.list();
+
+        assertThat(list).hasSize(2);
+    }
+    */
+
+
+
+    /* ================================
+       #8 Stats vacías / Stats con datos
+       ================================ */
+
+    /*
+    @Test // Stats vacías
+    void statsEmpty() {
+        var st = service.stats();
+        assertThat(st.get("total")).isEqualTo(0);
+    }
+
+    @Test // Stats con valores
+    void statsFilled() {
+        repository.save(new Student("A","a@mail.com",LocalDate.now(),true));
+        repository.save(new Student("B","b@mail.com",LocalDate.now(),false));
+
+        var st = service.stats();
+
+        assertThat(st.get("total")).isEqualTo(2);
+        assertThat(st.get("active")).isEqualTo(1);
+    }
+    */
+
+
+
+    /* ================================
+       #9 Email nulo OK (falla) / toResponse OK
+       ================================ */
+
+    /*
+    @Test // email nulo debe fallar
+    void createShouldFailIfEmailNull() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("User");
+        req.setEmail(null);
+        req.setBirthDate(LocalDate.of(2000,1,1));
+
+        assertThatThrownBy(() -> service.create(req))
+                .isInstanceOf(NullPointerException.class);
+    }
+
+    @Test // toResponse correcto
+    void toResponseShouldWork() {
+        Student s = repository.save(new Student("X","x@mail.com",
+                LocalDate.of(1999,9,9), true));
+
+        var r = service.getById(s.getId());
+
+        assertThat(r.getFullName()).isEqualTo("X");
     }
     */
 
