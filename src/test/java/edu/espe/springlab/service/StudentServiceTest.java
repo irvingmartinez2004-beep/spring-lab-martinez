@@ -95,7 +95,7 @@ public class StudentServiceTest {
         StudentRequestData req = new StudentRequestData();
         req.setFullName("Future User");
         req.setEmail("future@mail.com");
-        req.setBirthDate(LocalDate.now()); // fecha futura
+        req.setBirthDate(LocalDate.now().minusYears(20)); // fecha futura
 
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(RuntimeException.class); // depende de tu excepción
