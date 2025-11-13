@@ -44,4 +44,10 @@ public class StudentServiceTest {
         // Verificar que el servicio lanza excepción por email duplicado
         assertThatThrownBy(() -> service.create(req)).isInstanceOf(ConflictException.class);
     }
+//Error aproposito
+    @Test
+    void shouldFailOnPurpose() {
+        assertThat(1).isEqualTo(2);
+    }
+
 }
