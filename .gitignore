@@ -35,10 +35,3 @@ out/
 
 ### VS Code ###
 .vscode/
-
-# Logs
-*.log
-
-# SO
-.DS_Store
-Thumbs.db
