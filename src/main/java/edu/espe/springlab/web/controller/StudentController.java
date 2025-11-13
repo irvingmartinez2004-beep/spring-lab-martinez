@@ -8,9 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api/martinezirving/students")
 public class StudentController {
 
     private final StudentService studentService;
@@ -36,4 +37,27 @@ public class StudentController {
     public ResponseEntity<StudentResponse> deactivate(@PathVariable Long id){
         return ResponseEntity.ok(studentService.deactivate(id));
     }
+
+    @PatchMapping("/{id}/reactivate")
+    public ResponseEntity<StudentResponse> reactivate(@PathVariable Long id){
+        return ResponseEntity.ok(studentService.reactivate(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentResponse> update(
+            @PathVariable Long id,
+            @Valid @RequestBody StudentRequestData request) {
+
+        return ResponseEntity.ok(studentService.update(id, request));
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Long>> stats() {
+        return ResponseEntity.ok(studentService.stats());
+    }
+
+
+
+
+
 }

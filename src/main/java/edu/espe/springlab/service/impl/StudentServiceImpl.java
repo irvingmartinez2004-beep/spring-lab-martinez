@@ -9,7 +9,9 @@ import edu.espe.springlab.web.advice.ConflictException;
 import edu.espe.springlab.web.advice.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StudentServiceImpl implements StudentService {
@@ -49,6 +51,47 @@ public class StudentServiceImpl implements StudentService {
         student.setActive(false);
         return toResponse(repo.save(student));
     }
+
+    @Override
+    public StudentResponse update(Long id, StudentRequestData request) {
+        Student student = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Estudiante no encontrado"));
+
+        student.setFullName(request.getFullName());
+        student.setEmail(request.getEmail());
+        student.setBirthDate(request.getBirthDate());
+        student.setActive(request.getActive()); // <-- IMPORTANTE
+
+        Student saved = repo.save(student);
+        return toResponse(saved);
+    }
+
+
+    @Override
+    public StudentResponse reactivate(Long id) {
+        Student student = repo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Estudiante no encontrado"));
+
+        student.setActive(true);
+        Student saved = repo.save(student);
+
+        return toResponse(saved);
+    }
+
+    @Override
+    public Map<String, Long> stats() {
+        long total = repo.count();
+        long active = repo.countByActive(true);
+        long inactive = repo.countByActive(false);
+
+        Map<String, Long> result = new HashMap<>();
+        result.put("total", total);
+        result.put("active", active);
+        result.put("inactive", inactive);
+        return result;
+    }
+
+
 
     private StudentResponse toResponse(Student student){
         StudentResponse r = new StudentResponse();

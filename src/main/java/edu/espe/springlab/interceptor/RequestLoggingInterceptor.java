@@ -7,17 +7,31 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
 public class RequestLoggingInterceptor implements HandlerInterceptor {
+
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        request.setAttribute("t0", System.currentTimeMillis());
-        System.out.println("preHandle -> " + request.getMethod() + " " + request.getRequestURI());
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) {
+        request.setAttribute("startTime", System.currentTimeMillis());
         return true;
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        Long t0 = (Long) request.getAttribute("t0");
-        long elapsed = (t0 == null ? 0 : System.currentTimeMillis() - t0);
-        System.out.println("afterCompletion -> status = " + response.getStatus() + " tiempo = " + elapsed + " ms");
+    public void afterCompletion(HttpServletRequest request,
+                                HttpServletResponse response,
+                                Object handler,
+                                Exception ex) {
+
+        long start = (long) request.getAttribute("startTime");
+        long elapsed = System.currentTimeMillis() - start;
+
+        // 🔹 Header requerido por el taller
+        response.addHeader("X-Elapsed-Time", elapsed + "ms");
+
+        // 🔹 Log requerido por el taller
+        System.out.println(
+                request.getMethod() + " " +
+                        request.getRequestURI() + " -> " +
+                        response.getStatus() + " (" + elapsed + " ms)");
     }
 }
