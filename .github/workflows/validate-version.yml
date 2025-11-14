@@ -1,0 +1,40 @@
+name: Validate Version
+
+# Ejecutar este workflow cuando termine el workflow "Update Version"
+on:
+  workflow_run:
+    workflows: ["Update Version"]
+    types:
+      - completed
+
+jobs:
+  validate-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 1️⃣ Validar que el archivo existe
+      - name: Validar que application.yml existe
+        run: |
+          if [ ! -f src/main/resources/application.yml ]; then
+            echo "❌ application.yml NO existe"
+            exit 1
+          fi
+          echo "✔ application.yml encontrado"
+
+      # 2️⃣ Validar que contiene una versión con números
+      - name: Validar versión en application.yml
+        run: |
+          if ! grep -q "version:" src/main/resources/application.yml; then
+            echo "❌ El archivo no contiene 'version:'"
+            exit 1
+          fi
+
+          if ! grep -qE "version: \"[0-9]+\"" src/main/resources/application.yml; then
+            echo "❌ La versión no es válida"
+            exit 1
+          fi
+
+          echo "✔ La versión en application.yml es válida"

@@ -1,0 +1,23 @@
+name: Update Version
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 🔥 Crear un nuevo application.yml con la versión basada en GITHUB_RUN_NUMBER
+      - name: Actualizar versión en application.yml
+        run: |
+          echo "app:" > src/main/resources/application.yml
+          echo "  version: \"${GITHUB_RUN_NUMBER}\"" >> src/main/resources/application.yml
+
+      # Esto permite ver qué se escribió (para tu examen sirve muchísimo)
+      - name: Mostrar archivo actualizado
+        run: cat src/main/resources/application.yml
