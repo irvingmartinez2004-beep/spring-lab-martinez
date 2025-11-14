@@ -1,5 +1,4 @@
 name: CI
-
 on:
   push:
     branches: [ "main" ]
@@ -22,6 +21,7 @@ jobs:
 
       - name: Dar permisos a gradlew
         run: chmod +x gradlew
+      #Irving Martinez
 
       - name: Ejecutar build (compilar + pruebas)
         run: ./gradlew clean build
