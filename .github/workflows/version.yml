@@ -1,0 +1,24 @@
+name: Update Version
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Actualizar version en application.yml
+        run: |
+          echo "app.version: ${GITHUB_SHA}" > src/main/resources/application.yml
+
+      - name: Commit version
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "github-actions"
+          git add src/main/resources/application.yml
+          git commit -m "Update app version"
+          git push
