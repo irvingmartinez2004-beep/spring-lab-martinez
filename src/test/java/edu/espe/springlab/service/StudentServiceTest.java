@@ -237,9 +237,14 @@ public class StudentServiceTest {
     */
 
 
-    // =============================================================
-    // TEST 11 — Buscar ID inexistente debe lanzar NotFoundException
-    // =============================================================
+    @Test
+    void shouldThrowNotFoundWhenIdDoesNotExist() {
+        service.getById(999L);   // Sin assert — dejar que explote
+    }
+
+
+
+/*
     @Test
     void shouldThrowNotFoundWhenIdDoesNotExist() {
         assertThatThrownBy(() -> service.getById(999L))
@@ -247,7 +252,7 @@ public class StudentServiceTest {
                 .hasMessage("Estudiante no encontrado");
     }
 
-
+*/
     /*
     // =============================================================
     // TEST 12 — Desactivar estudiante inexistente
