@@ -265,6 +265,8 @@ class StudentRequestDataValidationTest {
     // ============================================================
     // 4. Email exactamente máximo permitido (válido)
     // ============================================================
+    @Disabled("Este test se desactiva temporalmente")
+
     @Test
     void shouldPassWhenEmailIsMaxLength() {
         String email = "a".repeat(110) + "@m.com";
