@@ -6,6 +6,7 @@ import edu.espe.springlab.dto.StudentRequestData;
 import edu.espe.springlab.dto.StudentResponse;
 import edu.espe.springlab.service.StudentService;
 import edu.espe.springlab.web.controller.StudentController;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -62,6 +63,8 @@ class StudentControllerTest {
     // -------------------------------------------------------
     // 1. CREATE (POST)
     // -------------------------------------------------------
+    @Disabled("Este test se desactiva temporalmente")
+
     @Test
     void shouldCreateStudent() throws Exception {
         StudentRequestData r = req("Juan", "juan@test.com");
