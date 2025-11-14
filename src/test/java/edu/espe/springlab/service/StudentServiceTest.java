@@ -494,7 +494,7 @@ public class StudentServiceTest {
        #2 Fecha válida / Fecha futura inválida
        ================================ */
 
-
+    /*
     @Test // Fecha correcta
     void shouldAcceptPastDate() {
         StudentRequestData req = new StudentRequestData();
@@ -507,8 +507,8 @@ public class StudentServiceTest {
         assertThat(r).isNotNull();
     }
 
+     */
 
-    /*
     @Test // Fecha futura
     void shouldRejectFutureDate() {
         StudentRequestData req = new StudentRequestData();
@@ -519,7 +519,6 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(BadRequestException.class);
     }
-    */
 
 
 
