@@ -5,6 +5,7 @@ import edu.espe.springlab.dto.StudentRequestData;
 import edu.espe.springlab.repository.StudentRepository;
 import edu.espe.springlab.service.impl.StudentServiceImpl;
 import edu.espe.springlab.web.advice.ConflictException;
+import edu.espe.springlab.web.advice.NotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,13 +46,13 @@ public class StudentServiceTest {
         req.setFullName("Otro estudiante");
         req.setEmail("test@example.com");
         req.setBirthDate(LocalDate.of(2004, 5, 15));
-/*
+
         // Verificar excepción
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(ConflictException.class);
     }
 
- */
+
         // =============================================================
         //  TEST QUE FALLA A PROPÓSITO (PARA PROBAR EL ROLLBACK)
         // =============================================================
@@ -235,7 +236,7 @@ public class StudentServiceTest {
     }
     */
 
-        /*
+
     // =============================================================
     // TEST 11 — Buscar ID inexistente debe lanzar NotFoundException
     // =============================================================
@@ -245,7 +246,6 @@ public class StudentServiceTest {
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Estudiante no encontrado");
     }
-    */
 
 
     /*
@@ -712,4 +712,4 @@ public class StudentServiceTest {
 
 
     }
-}
+
