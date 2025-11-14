@@ -30,31 +30,33 @@ public class StudentServiceTest {
 
     // =============================================================
     //  TEST OFICIAL QUE YA TENÍAS (EMAIL DUPLICADO)
+    // =============================================================
     @Test
     void shouldNotAllowDuplicateEmail() {
-        // Crear estudiante
+        // Crear y guardar un estudiante existente
         Student existing = new Student();
-        existing.setFullName("Irving Martinez");
-        existing.setEmail("test@example.com");
-        existing.setBirthDate(LocalDate.of(2004, 10, 10));
+        existing.setFullName("Existing User");
+        existing.setEmail("duplicate@example.com");
+        existing.setBirthDate(LocalDate.of(2000, 10, 10));
         existing.setActive(true);
 
         repository.save(existing);
 
-        // Crear otro con el mismo email
+        // Crear la solicitud con el mismo email
         StudentRequestData req = new StudentRequestData();
-        req.setFullName("Otro estudiante");
-        req.setEmail("test@example.com");
-        req.setBirthDate(LocalDate.of(2004, 5, 15));
+        req.setFullName("Another User");
+        req.setEmail("duplicate@example.com");
+        req.setBirthDate(LocalDate.of(1999, 5, 15));
 
-        // Verificar excepción
-        service.create(req);
+        // Verificar excepción por email duplicado
+        assertThatThrownBy(() -> service.create(req))
+                .isInstanceOf(ConflictException.class);
     }
 
 
-        // =============================================================
-        //  TEST QUE FALLA A PROPÓSITO (PARA PROBAR EL ROLLBACK)
-        // =============================================================
+    // =============================================================
+    //  TEST QUE FALLA A PROPÓSITO (PARA PROBAR EL ROLLBACK)
+    // =============================================================
 
     /*
     @Test
@@ -63,9 +65,9 @@ public class StudentServiceTest {
     }
     */
 
-        // =============================================================
-        //  🔴 AQUÍ COMIENZAN LOS TESTS ADICIONALES (TODOS DESACTIVADOS)
-        // =============================================================
+    // =============================================================
+    //  🔴 AQUÍ COMIENZAN LOS TESTS ADICIONALES (TODOS DESACTIVADOS)
+    // =============================================================
 
 
     /*
@@ -184,39 +186,12 @@ public class StudentServiceTest {
     */
 
 
-    /*
+
     // =============================================================
     // TEST 8 — Crear estudiante correctamente
     // =============================================================
-    @Test
-    void shouldCreateStudentCorrectly() {
-        StudentRequestData req = new StudentRequestData();
-        req.setFullName("Carlos Perez");
-        req.setEmail("carlos@mail.com");
-        req.setBirthDate(LocalDate.of(1999, 12, 1));
-
-        var response = service.create(req);
-
-        assertThat(response.getEmail()).isEqualTo("carlos@mail.com");
-        assertThat(response.getFullName()).isEqualTo("Carlos Perez");
-    }
-    */
 
 
-    /*
-    // =============================================================
-    // TEST 9 — Desactivar estudiante
-    // =============================================================
-    @Test
-    void shouldDeactivateStudent() {
-        Student s = new Student("User", "user@mail.com", LocalDate.now(), true);
-        s = repository.save(s);
-
-        var response = service.deactivate(s.getId());
-
-        assertThat(response.getActive()).isFalse();
-    }
-    */
 
 
     /*
@@ -235,23 +210,18 @@ public class StudentServiceTest {
     }
     */
 
-   /*
-
-    @Test
-    void shouldThrowNotFoundWhenIdDoesNotExist() {
-        service.getById(999L);   // Sin assert — dejar que explote
-    }
-
-*/
- /*
-
+        /*
+    // =============================================================
+    // TEST 11 — Buscar ID inexistente debe lanzar NotFoundException
+    // =============================================================
     @Test
     void shouldThrowNotFoundWhenIdDoesNotExist() {
         assertThatThrownBy(() -> service.getById(999L))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Estudiante no encontrado");
     }
-*/
+    */
+
 
     /*
     // =============================================================
@@ -716,5 +686,48 @@ public class StudentServiceTest {
     */
 
 
+
+
+    @Test
+    void shouldCreateStudentCorrectly() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Irving Martinez");
+        req.setEmail("irving@mail.com");
+        req.setBirthDate(LocalDate.of(1999, 12, 1));
+
+        var response = service.create(req);
+
+        assertThat(response.getEmail()).isEqualTo("irving@mail.com");
+        assertThat(response.getFullName()).isEqualTo("Irving Martinez");
     }
 
+
+    // Desactivar estudiante
+
+    @Test
+    void shouldDeactivateStudent() {
+        Student s = new Student("Irving Martinez", "irving@mail.com", LocalDate.of(1999, 12, 1), true);
+        s = repository.save(s);
+
+        var response = service.deactivate(s.getId());
+
+        assertThat(response.getActive()).isFalse();
+    }
+
+    @Test // Buscar estudiante existente
+    void findByIdShouldWork() {
+        Student s = repository.save(new Student("Irving Martinez","irving@mail.com",
+                LocalDate.now(), true));
+
+        var r = service.getById(s.getId());
+
+        assertThat(r.getEmail()).isEqualTo("irving@mail.com");
+    }
+
+    @Test // Buscar inexistente
+    void findByIdShouldFail() {
+        assertThatThrownBy(() -> service.getById(999L))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+}

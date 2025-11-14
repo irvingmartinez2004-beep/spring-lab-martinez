@@ -23,6 +23,9 @@ public class Student {
 
     public Student() {}
 
+    public Student(String user, String mail, LocalDate now, boolean b) {
+    }
+
     public Long getId() {
         return id;
     }
