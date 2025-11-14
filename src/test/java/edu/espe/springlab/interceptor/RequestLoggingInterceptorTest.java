@@ -43,10 +43,9 @@ class RequestLoggingInterceptorTest {
     }
     */
 
-    // ============================================================
-    // 2. afterCompletion debe agregar header X-Elapsed-Time
-    // ============================================================
-    @Disabled("Este test se desactiva temporalmente")
+
+    //header X-Elapsed-Time
+
 
     @Test
     void shouldAddElapsedTimeHeaderAfterCompletion() {

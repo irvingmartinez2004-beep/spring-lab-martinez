@@ -19,7 +19,7 @@ class StudentRepositoryTest {
     private StudentRepository repo;
 
     private Student build(String fullName, String email, boolean active) {
-        Student s = new Student("A", "a@mail.com", LocalDate.now(), true);
+        Student s = new Student();
         s.setFullName(fullName);
         s.setEmail(email);
         s.setBirthDate(LocalDate.of(2000, 1, 1));
