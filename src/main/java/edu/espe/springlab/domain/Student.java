@@ -21,7 +21,7 @@ public class Student {
 
     private Boolean active = true;
 
-    public Student() {}
+    public Student(String a, String mail, LocalDate now, boolean b) {}
 
     public Long getId() {
         return id;

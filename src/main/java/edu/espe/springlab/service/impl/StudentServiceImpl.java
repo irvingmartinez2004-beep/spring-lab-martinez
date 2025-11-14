@@ -24,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
         if(repo.existsByEmail(request.getEmail())) {
             throw new ConflictException("El email ya esta registrado");
         }
-        Student student = new Student();
+        Student student = new Student("A", "a@mail.com", LocalDate.now(), true);
         student.setFullName(request.getFullName());
         student.setEmail(request.getEmail());
         student.setBirthDate(request.getBirthDate());

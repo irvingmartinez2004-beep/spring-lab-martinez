@@ -5,14 +5,12 @@ import edu.espe.springlab.dto.StudentRequestData;
 import edu.espe.springlab.repository.StudentRepository;
 import edu.espe.springlab.service.impl.StudentServiceImpl;
 import edu.espe.springlab.web.advice.ConflictException;
-import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -33,7 +31,7 @@ public class StudentServiceTest {
     @Test
     void shouldNotAllowDuplicateEmail() {
         // Crear y guardar un estudiante existente
-        Student existing = new Student();
+        Student existing = new Student("A", "a@mail.com", LocalDate.now(), true);
         existing.setFullName("Existing User");
         existing.setEmail("duplicate@example.com");
         existing.setBirthDate(LocalDate.of(2000, 10, 10));
@@ -710,6 +708,55 @@ public class StudentServiceTest {
         assertThat(r.getFullName()).isEqualTo("X");
     }
     */
+
+
+    //Crear 3 estudiantes
+    @Test
+    void createShouldWork1() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Irving");
+        req.setEmail("carlos@mail.com");
+        req.setBirthDate(LocalDate.of(2000,1,1));
+
+        var r = service.create(req);
+
+        assertThat(r.getEmail()).isEqualTo("carlos@mail.com");
+    }
+    @Test
+    void createShouldWork2() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Carlos");
+        req.setEmail("car@mail.com");
+        req.setBirthDate(LocalDate.of(2000,1,1));
+
+        var r = service.create(req);
+
+        assertThat(r.getEmail()).isEqualTo("carlos@mail.com");
+    }
+    @Test
+    void createShouldWork3() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Perez");
+        req.setEmail("perez@mail.com");
+        req.setBirthDate(LocalDate.of(2000,1,1));
+        req.setActive(false);
+        var r = service.create(req);
+
+        assertThat(r.getEmail()).isEqualTo("carlos@mail.com");
+    }
+
+    //getstats
+    @Test
+    void shouldReturnMultipleStudents() {
+
+        repository.save(new Student("Irving", "carlos@mail.com", LocalDate.now(), true));
+        repository.save(new Student("Carlos", "car@mail.com", LocalDate.now(), true));
+        repository.save(new Student("Perez", "perez@mail.com", LocalDate.now(), false));
+
+        var list = service.list();
+
+        assertThat(list).hasSize(3);
+    }
 
 
 }
