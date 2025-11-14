@@ -46,7 +46,7 @@ public class StudentServiceTest {
         req.setFullName("Another User");
         req.setEmail("duplicate@example.com");
         req.setBirthDate(LocalDate.of(1999, 5, 15));
-
+//irving
         // Verificar excepción por email duplicado
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(ConflictException.class);
@@ -537,6 +537,7 @@ public class StudentServiceTest {
 
         assertThat(r.getEmail()).isEqualTo("a@mail.com");
     }
+    // ef
 
     @Test // Buscar inexistente
     void findByIdShouldFail() {
