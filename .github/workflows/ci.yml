@@ -25,3 +25,6 @@ jobs:
 
       - name: Ejecutar build (compilar + pruebas)
         run: ./gradlew clean build
+
+      - name: Forzar fallo (solo para probar rollback)
+        run: exit 1
