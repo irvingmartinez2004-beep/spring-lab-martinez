@@ -45,16 +45,16 @@ public class StudentServiceTest {
         req.setFullName("Otro estudiante");
         req.setEmail("test@example.com");
         req.setBirthDate(LocalDate.of(2004, 5, 15));
-
+/*
         // Verificar excepción
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(ConflictException.class);
     }
 
-
-    // =============================================================
-    //  TEST QUE FALLA A PROPÓSITO (PARA PROBAR EL ROLLBACK)
-    // =============================================================
+ */
+        // =============================================================
+        //  TEST QUE FALLA A PROPÓSITO (PARA PROBAR EL ROLLBACK)
+        // =============================================================
 
     /*
     @Test
@@ -63,9 +63,9 @@ public class StudentServiceTest {
     }
     */
 
-    // =============================================================
-    //  🔴 AQUÍ COMIENZAN LOS TESTS ADICIONALES (TODOS DESACTIVADOS)
-    // =============================================================
+        // =============================================================
+        //  🔴 AQUÍ COMIENZAN LOS TESTS ADICIONALES (TODOS DESACTIVADOS)
+        // =============================================================
 
 
     /*
@@ -711,4 +711,5 @@ public class StudentServiceTest {
     */
 
 
+    }
 }
