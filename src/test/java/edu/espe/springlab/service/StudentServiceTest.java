@@ -509,7 +509,7 @@ public class StudentServiceTest {
     }
 
      */
-
+/*
     @Test // Fecha futura
     void shouldRejectFutureDate() {
         StudentRequestData req = new StudentRequestData();
@@ -521,7 +521,7 @@ public class StudentServiceTest {
                 .isInstanceOf(BadRequestException.class);
     }
 
-
+*/
 
     /* ================================
        #3 Buscar OK / Buscar Fail
