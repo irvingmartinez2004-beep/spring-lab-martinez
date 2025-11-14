@@ -185,12 +185,39 @@ public class StudentServiceTest {
     */
 
 
-
+    /*
     // =============================================================
     // TEST 8 — Crear estudiante correctamente
     // =============================================================
+    @Test
+    void shouldCreateStudentCorrectly() {
+        StudentRequestData req = new StudentRequestData();
+        req.setFullName("Carlos Perez");
+        req.setEmail("carlos@mail.com");
+        req.setBirthDate(LocalDate.of(1999, 12, 1));
+
+        var response = service.create(req);
+
+        assertThat(response.getEmail()).isEqualTo("carlos@mail.com");
+        assertThat(response.getFullName()).isEqualTo("Carlos Perez");
+    }
+    */
 
 
+    /*
+    // =============================================================
+    // TEST 9 — Desactivar estudiante
+    // =============================================================
+    @Test
+    void shouldDeactivateStudent() {
+        Student s = new Student("User", "user@mail.com", LocalDate.now(), true);
+        s = repository.save(s);
+
+        var response = service.deactivate(s.getId());
+
+        assertThat(response.getActive()).isFalse();
+    }
+    */
 
 
     /*
@@ -684,36 +711,5 @@ public class StudentServiceTest {
     }
     */
 
-
-
-
-    @Test
-    void shouldCreateStudentCorrectly() {
-        StudentRequestData req = new StudentRequestData();
-        req.setFullName("Carlos Perez");
-        req.setEmail("carlos@mail.com");
-        req.setBirthDate(LocalDate.of(1999, 12, 1));
-
-        var response = service.create(req);
-
-        assertThat(response.getEmail()).isEqualTo("carlos@mail.com");
-        assertThat(response.getFullName()).isEqualTo("Carlos Perez");
-    }
-
-
-
-
-    // =============================================================
-    // TEST 9 — Desactivar estudiante
-
-    @Test
-    void shouldDeactivateStudent() {
-        Student s = new Student("User", "user@mail.com", LocalDate.now(), true);
-        s = repository.save(s);
-
-        var response = service.deactivate(s.getId());
-
-        assertThat(response.getActive()).isFalse();
-    }
 
 }
