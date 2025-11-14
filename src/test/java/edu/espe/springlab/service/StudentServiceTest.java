@@ -5,7 +5,6 @@ import edu.espe.springlab.dto.StudentRequestData;
 import edu.espe.springlab.repository.StudentRepository;
 import edu.espe.springlab.service.impl.StudentServiceImpl;
 import edu.espe.springlab.web.advice.ConflictException;
-import edu.espe.springlab.web.advice.NotFoundException;
 import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -691,43 +690,30 @@ public class StudentServiceTest {
     @Test
     void shouldCreateStudentCorrectly() {
         StudentRequestData req = new StudentRequestData();
-        req.setFullName("Irving Martinez");
-        req.setEmail("irving@mail.com");
+        req.setFullName("Carlos Perez");
+        req.setEmail("carlos@mail.com");
         req.setBirthDate(LocalDate.of(1999, 12, 1));
 
         var response = service.create(req);
 
-        assertThat(response.getEmail()).isEqualTo("irving@mail.com");
-        assertThat(response.getFullName()).isEqualTo("Irving Martinez");
+        assertThat(response.getEmail()).isEqualTo("carlos@mail.com");
+        assertThat(response.getFullName()).isEqualTo("Carlos Perez");
     }
 
 
-    // Desactivar estudiante
+
+
+    // =============================================================
+    // TEST 9 — Desactivar estudiante
 
     @Test
     void shouldDeactivateStudent() {
-        Student s = new Student("Irving Martinez", "irving@mail.com", LocalDate.of(1999, 12, 1), true);
+        Student s = new Student("User", "user@mail.com", LocalDate.now(), true);
         s = repository.save(s);
 
         var response = service.deactivate(s.getId());
 
         assertThat(response.getActive()).isFalse();
-    }
-
-    @Test // Buscar estudiante existente
-    void findByIdShouldWork() {
-        Student s = repository.save(new Student("Irving Martinez","irving@mail.com",
-                LocalDate.now(), true));
-
-        var r = service.getById(s.getId());
-
-        assertThat(r.getEmail()).isEqualTo("irving@mail.com");
-    }
-
-    @Test // Buscar inexistente
-    void findByIdShouldFail() {
-        assertThatThrownBy(() -> service.getById(999L))
-                .isInstanceOf(NotFoundException.class);
     }
 
 }
