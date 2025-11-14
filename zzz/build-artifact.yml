@@ -16,7 +16,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-
       - run: chmod +x gradlew
 
       - name: Build JAR
