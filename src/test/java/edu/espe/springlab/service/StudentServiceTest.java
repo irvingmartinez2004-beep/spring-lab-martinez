@@ -29,25 +29,24 @@ public class StudentServiceTest {
 
     // =============================================================
     //  TEST OFICIAL QUE YA TENÍAS (EMAIL DUPLICADO)
-    // =============================================================
     @Test
     void shouldNotAllowDuplicateEmail() {
-        // Crear y guardar un estudiante existente
+        // Crear estudiante
         Student existing = new Student();
-        existing.setFullName("Existing User");
-        existing.setEmail("duplicate@example.com");
-        existing.setBirthDate(LocalDate.of(2000, 10, 10));
+        existing.setFullName("Irving Martinez");
+        existing.setEmail("test@example.com");
+        existing.setBirthDate(LocalDate.of(2004, 10, 10));
         existing.setActive(true);
 
         repository.save(existing);
 
-        // Crear la solicitud con el mismo email
+        // Crear otro con el mismo email
         StudentRequestData req = new StudentRequestData();
-        req.setFullName("Another User");
-        req.setEmail("duplicate@example.com");
-        req.setBirthDate(LocalDate.of(1999, 5, 15));
+        req.setFullName("Otro estudiante");
+        req.setEmail("test@example.com");
+        req.setBirthDate(LocalDate.of(2004, 5, 15));
 
-        // Verificar excepción por email duplicado
+        // Verificar excepción
         assertThatThrownBy(() -> service.create(req))
                 .isInstanceOf(ConflictException.class);
     }
