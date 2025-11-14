@@ -1,12 +1,10 @@
 spring:
-  #Configuracion del datasource
   datasource:
     url: jdbc:mysql://localhost:3306/spring_lab?useSSL=false&serverTimezone=UTC
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  #Configuracion de JPA/Hibernate
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,20 +13,16 @@ spring:
       hibernate:
         format_sql: true
 
-  #Configuracion de Jackson
   jackson:
     serialization:
       write-dates-as-timestamps: false
 
-  #Configurar DevTools
   devtools:
     restart:
       enabled: true
 
-#Configurar el servidor embebido (Tomcat)
 server:
   port: 8080
 
-
-  app:
-    version: "DEV"
+app:
+  version: "DEV"
